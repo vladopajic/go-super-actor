@@ -1,14 +1,12 @@
-# go-super-actor
+package example
 
-`go-super-actor` is addon abstraction for [go-actor](https://github.com/vladopajic/go-actor) designed for testing actors and workers using same testing logic.
+import (
+	"fmt"
+	"time"
 
-## Example 
+	"github.com/vladopajic/go-actor/actor"
+)
 
-See example of `go-super-actor` (runnabe code is in [example](./example/) folder).
-
-First we need actor and worker that needs to be tested. In this example we have `PizzaBaker` actor and worker.
-
-``` go
 type PizzaBaker interface {
 	Bake(req PizzaBakeRequest) <-chan PizzaBakeResponse
 }
@@ -86,59 +84,3 @@ func (w *pizzaBakeWorker) handleBakeRequest(wreq bakeRequest) {
 		BakedAt: time.Now(),
 	}
 }
-```
-
-Now we can test `NewPizzaBakeActor()` and `newPizzaBakeWorker(...)` using same testing logic `testPizzaBaker`.
-
-```go
-func Test_PizzaBaker(t *testing.T) {
-	t.Parallel()
-
-	t.Run("actor", func(t *testing.T) {
-		t.Parallel()
-
-		testPizzaBaker(t, NewPizzaBakeActor)
-	})
-
-	t.Run("worker", func(t *testing.T) {
-		t.Parallel()
-
-		bakeReqMailbox := actor.NewMailbox[BakeRequest]()
-		bakeReqMailbox.Start()
-		t.Cleanup(bakeReqMailbox.Stop)
-
-		testPizzaBaker(t, func() PizzaBaker {
-			return NewPizzaBakeWorker(bakeReqMailbox)
-		})
-	})
-}
-
-type factoryFn[T PizzaBaker] func() T
-
-func testPizzaBaker[T PizzaBaker](t *testing.T, fact factoryFn[T]) {
-	t.Helper()
-
-	baker := fact()
-	sa, err := super.New(baker)
-	assert.NoError(t, err)
-
-	sa.Start()
-	defer sa.Stop()
-
-	{ //  Valid bake request
-		respC := baker.Bake(PizzaBakeRequest{
-			Topings: []Topping{"ketchup", "bacon", "salami", "origaon", "mushrooms"},
-		})
-		assert.Equal(t, actor.WorkerContinue, sa.DoWork())
-		assert.NoError(t, (<-respC).Error)
-	}
-
-	{ // Invalid bake request
-		respC := baker.Bake(PizzaBakeRequest{
-			Topings: []Topping{"ketchup", "bacon", "salami", "strawbarry"},
-		})
-		assert.Equal(t, actor.WorkerContinue, sa.DoWork())
-		assert.Error(t, (<-respC).Error)
-	}
-}
-```
