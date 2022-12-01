@@ -6,7 +6,10 @@ func (t Topping) Valid() bool {
 	return toppingSliceContains(toppings, t)
 }
 
-var toppings = []Topping{"ketchup", "bacon", "salami", "origaon", "mushrooms", "onions", "olives", "mozzarella"}
+//nolint:gochecknoglobals // relax
+var toppings = []Topping{
+	"ketchup", "bacon", "salami", "origaon", "mushrooms", "onions", "olives", "mozzarella",
+}
 
 func FilterInvalidToping(tt []Topping) []Topping {
 	var resp []Topping
@@ -26,5 +29,6 @@ func toppingSliceContains(tt []Topping, search Topping) bool {
 			return true
 		}
 	}
+
 	return false
 }

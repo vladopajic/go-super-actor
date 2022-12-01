@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
 	"github.com/vladopajic/go-actor/actor"
+
 	"github.com/vladopajic/go-super-actor"
 	. "github.com/vladopajic/go-super-actor/example"
 )
@@ -54,7 +54,7 @@ func testPizzaBaker[T PizzaBaker](t *testing.T, fact factoryFn[T]) {
 
 	{ // Invalid bake request
 		respC := baker.Bake(PizzaBakeRequest{
-			Topings: []Topping{"ketchup", "bacon", "salami", "strawbarry"},
+			Topings: []Topping{"ketchup", "bacon", "salami", "strawberry"},
 		})
 		assert.Equal(t, actor.WorkerContinue, sa.DoWork())
 		assert.Error(t, (<-respC).Error)

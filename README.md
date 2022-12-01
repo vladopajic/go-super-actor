@@ -1,6 +1,9 @@
 # go-super-actor
 
-`go-super-actor` is addon abstraction for [go-actor](https://github.com/vladopajic/go-actor) designed for testing actors and workers using same testing logic.
+[![lint](https://github.com/vladopajic/go-super-actor/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/vladopajic/go-super-actor/actions/workflows/lint.yml)
+[![test](https://github.com/vladopajic/go-super-actor/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/vladopajic/go-super-actor/actions/workflows/test.yml)
+
+`go-super-actor` (or just `super`) is addon abstraction for [go-actor](https://github.com/vladopajic/go-actor) designed for testing actors and workers using same testing logic.
 
 ## Example 
 
