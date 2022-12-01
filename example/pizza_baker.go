@@ -25,7 +25,7 @@ type PizzaBakeResponse struct {
 	BakedAt time.Time
 }
 
-func NewPizzaBakeActor() PizzaBakerActor {
+func NewPizzaBaker() PizzaBakerActor {
 	bakeReqMailbox := actor.NewMailbox[bakeRequest]()
 	w := newPizzaBakeWorker(bakeReqMailbox)
 

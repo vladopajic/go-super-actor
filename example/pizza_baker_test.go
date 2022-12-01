@@ -16,7 +16,7 @@ func Test_PizzaBaker(t *testing.T) {
 	t.Run("actor", func(t *testing.T) {
 		t.Parallel()
 
-		testPizzaBaker(t, NewPizzaBakeActor)
+		testPizzaBaker(t, NewPizzaBaker)
 	})
 
 	t.Run("worker", func(t *testing.T) {

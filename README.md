@@ -16,6 +16,11 @@ type PizzaBaker interface {
 	Bake(req PizzaBakeRequest) <-chan PizzaBakeResponse
 }
 
+type PizzaBakerActor interface {
+	actor.Actor
+	PizzaBaker
+}
+
 type PizzaBakeRequest struct {
 	Topings []Topping
 }
@@ -25,17 +30,17 @@ type PizzaBakeResponse struct {
 	BakedAt time.Time
 }
 
-func NewPizzaBakeActor() *bizzaBakeActor {
+func NewPizzaBaker() PizzaBakerActor {
 	bakeReqMailbox := actor.NewMailbox[bakeRequest]()
 	w := newPizzaBakeWorker(bakeReqMailbox)
 
-	return &bizzaBakeActor{
+	return &bizzaBakerActor{
 		Actor:      actor.Combine(actor.New(w), bakeReqMailbox),
 		PizzaBaker: w,
 	}
 }
 
-type bizzaBakeActor struct {
+type bizzaBakerActor struct {
 	actor.Actor
 	PizzaBaker
 }
@@ -73,6 +78,7 @@ func (w *pizzaBakeWorker) DoWork(ctx actor.Context) actor.WorkerStatus {
 func (w *pizzaBakeWorker) Bake(req PizzaBakeRequest) <-chan PizzaBakeResponse {
 	respC := make(chan PizzaBakeResponse, 1)
 	w.bakeReqMailbox.SendC() <- bakeRequest{req, respC}
+
 	return respC
 }
 
@@ -91,7 +97,7 @@ func (w *pizzaBakeWorker) handleBakeRequest(wreq bakeRequest) {
 }
 ```
 
-Now we can test `NewPizzaBakeActor()` and `newPizzaBakeWorker(...)` using same testing logic `testPizzaBaker`.
+Now we can test `NewPizzaBaker()` and `newPizzaBakeWorker(...)` using same testing logic `testPizzaBaker(...)`.
 
 ```go
 func Test_PizzaBaker(t *testing.T) {
@@ -100,7 +106,7 @@ func Test_PizzaBaker(t *testing.T) {
 	t.Run("actor", func(t *testing.T) {
 		t.Parallel()
 
-		testPizzaBaker(t, NewPizzaBakeActor)
+		testPizzaBaker(t, NewPizzaBaker)
 	})
 
 	t.Run("worker", func(t *testing.T) {
@@ -138,7 +144,7 @@ func testPizzaBaker[T PizzaBaker](t *testing.T, fact factoryFn[T]) {
 
 	{ // Invalid bake request
 		respC := baker.Bake(PizzaBakeRequest{
-			Topings: []Topping{"ketchup", "bacon", "salami", "strawbarry"},
+			Topings: []Topping{"ketchup", "bacon", "salami", "strawberry"},
 		})
 		assert.Equal(t, actor.WorkerContinue, sa.DoWork())
 		assert.Error(t, (<-respC).Error)
