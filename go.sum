@@ -1,10 +1,8 @@
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/golang-ds/linkedlist v1.0.0 h1:MrbDfIhQ9SL1my/siW/2va52kKO3IRCFdOa9EfzFFjM=
-github.com/golang-ds/linkedlist v1.0.0/go.mod h1:oRpzIKkdhV7lom4F8dgjDgq+1LGWs37Lge55MwXwNi8=
-github.com/golang-ds/queue v1.0.0 h1:hqcXLnt7tAZLWv3t5Dfh6y1gIgy0KCW/viiKSUG55cM=
-github.com/golang-ds/queue v1.0.0/go.mod h1:0wfhzQPWD2kZRXcDIBwEe490RcBoXdcHuUiJVYgf3vU=
+github.com/gammazero/deque v0.2.0 h1:SkieyNB4bg2/uZZLxvya0Pq6diUlwx7m2TeT7GAIWaA=
+github.com/gammazero/deque v0.2.0/go.mod h1:LFroj8x4cMYCukHJDbxFCkT+r9AndaJnFMuZDV34tuU=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
@@ -18,8 +16,8 @@ github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PKk=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
-github.com/vladopajic/go-actor v1.0.3 h1:jcSmt1IlKUUwEAuhW8fOwsi4FEKYrumFVw/ZRUIMxY4=
-github.com/vladopajic/go-actor v1.0.3/go.mod h1:8IcjhdPM6bBvRwKX1D4SzWpglSBU6BoW5J2MoQZoO+k=
+github.com/vladopajic/go-actor v0.4.0 h1:g7/EgFitRcnq0ZWgwe76eRrUNF3YZqLf/KjYDZa9r68=
+github.com/vladopajic/go-actor v0.4.0/go.mod h1:0SPOVxbQBC0MkWcC1Nd/qREGy4ypFcgns49OhValZJM=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 go.uber.org/goleak v1.1.12 h1:gZAh5/EyT/HQwlpkCy6wTpqfH9H8Lz8zbm3dZh+OyzA=
 go.uber.org/goleak v1.1.12/go.mod h1:cwTWslyiVhfpKIDGSZEM2HlOvcqm+tG4zioyIeLoqMQ=
