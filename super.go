@@ -2,6 +2,7 @@ package super
 
 import (
 	"errors"
+	"sync"
 
 	"github.com/vladopajic/go-actor/actor"
 )
@@ -32,33 +33,55 @@ func (s *superActor) DoWork() actor.WorkerStatus {
 }
 
 type superWorker struct {
-	workReqC chan chan actor.WorkerStatus
-	w        actor.Worker
+	workReqCLock sync.Mutex
+	workReqC     chan chan actor.WorkerStatus
+	w            actor.Worker
 }
 
 func (s *superWorker) DoWork() actor.WorkerStatus {
 	respC := make(chan actor.WorkerStatus)
+
+	s.workReqCLock.Lock()
 	s.workReqC <- respC
+	s.workReqCLock.Unlock()
 
 	return <-respC
 }
 
 func (s *superWorker) Start() {
+	s.workReqCLock.Lock()
+	defer s.workReqCLock.Unlock()
+
+	if s.workReqC != nil {
+		return
+	}
+
 	s.workReqC = make(chan chan actor.WorkerStatus)
-	go s.handleWorkRequest()
+	go handleWorkRequest(s.w, s.workReqC)
 }
 
 func (s *superWorker) Stop() {
-	close(s.workReqC)
+	s.workReqCLock.Lock()
+	defer s.workReqCLock.Unlock()
+
+	if s.workReqC != nil {
+		close(s.workReqC)
+		s.workReqC = nil
+	}
 }
 
-func (s *superWorker) handleWorkRequest() {
+func handleWorkRequest(
+	w actor.Worker,
+	workReqC chan chan actor.WorkerStatus,
+) {
+	ctx := actor.ContextStarted()
+
 	for {
-		respC, ok := <-s.workReqC
+		respC, ok := <-workReqC
 		if !ok {
 			return
 		}
 
-		respC <- s.w.DoWork(actor.ContextStarted())
+		respC <- w.DoWork(ctx)
 	}
 }
