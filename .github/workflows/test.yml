@@ -24,7 +24,7 @@ jobs:
         uses: action-badges/core@0.2.2
         with:
           label: coverage
-          message: ${{ steps.coverage.outputs.total_coverage }}"
+          message: ${{ steps.coverage.outputs.total_coverage }}%
           message-color: blue
           file-name: coverage.svg
           badge-branch: badges
