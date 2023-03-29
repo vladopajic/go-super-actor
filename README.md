@@ -2,7 +2,11 @@
 
 [![test](https://github.com/vladopajic/go-super-actor/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/vladopajic/go-super-actor/actions/workflows/test.yml)
 [![lint](https://github.com/vladopajic/go-super-actor/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/vladopajic/go-super-actor/actions/workflows/lint.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/vladopajic/go-super-actor)](https://goreportcard.com/report/github.com/vladopajic/go-super-actor)
 [![coverage](https://raw.githubusercontent.com/vladopajic/go-super-actor/badges/.badges/main/coverage.svg)](https://github.com/vladopajic/go-super-actor)
+[![GoDoc](https://godoc.org/github.com/vladopajic/go-super-actor?status.svg)](https://godoc.org/github.com/vladopajic/go-super-actor)
+[![Release](https://img.shields.io/github/release/vladopajic/go-super-actor.svg?style=flat-square)](https://github.com/vladopajic/go-super-actor/releases/latest)
+
 
 `go-super-actor` (or just `super`) is addon abstraction for [go-actor](https://github.com/vladopajic/go-actor) designed for testing actors and workers using same testing logic.
 
