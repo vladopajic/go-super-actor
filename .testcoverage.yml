@@ -1,0 +1,9 @@
+# Config file for go-test-coverage github action.
+# go-super-actor commits to keep 100% test coverage.
+
+profile: cover.out
+localPrefix: "github.com/vladopajic/go-super-actor"
+threshold:
+  file: 100
+  package: 100
+  total: 100

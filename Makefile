@@ -1,7 +1,7 @@
 GO ?= go
 GOBIN ?= $$($(GO) env GOPATH)/bin
 GOLANGCI_LINT ?= $(GOBIN)/golangci-lint
-GOLANGCI_LINT_VERSION ?= v1.49.0
+GOLANGCI_LINT_VERSION ?= v1.51.2
 
 .PHONY: get-golangcilint
 get-golangcilint:
@@ -15,7 +15,7 @@ lint: get-golangcilint
 # Runs tests on entire repo
 .PHONY: test
 test: 
-	go test -timeout=3s -race -count=10 -failfast ./...
+	go test -timeout=3s -race -count=10 -shuffle=on -failfast ./...
 
 # Code tidy
 .PHONY: tidy
