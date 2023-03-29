@@ -17,7 +17,7 @@ type PizzaBakerActor interface {
 }
 
 type PizzaBakeRequest struct {
-	Topings []Topping
+	Toppings []Topping
 }
 
 type PizzaBakeResponse struct {
@@ -29,13 +29,13 @@ func NewPizzaBaker() PizzaBakerActor {
 	bakeReqMailbox := actor.NewMailbox[bakeRequest]()
 	w := newPizzaBakeWorker(bakeReqMailbox)
 
-	return &bizzaBakerActor{
+	return &pizzaBakerActor{
 		Actor:      actor.Combine(actor.New(w), bakeReqMailbox),
 		PizzaBaker: w,
 	}
 }
 
-type bizzaBakerActor struct {
+type pizzaBakerActor struct {
 	actor.Actor
 	PizzaBaker
 }
@@ -78,7 +78,7 @@ func (w *pizzaBakeWorker) Bake(req PizzaBakeRequest) <-chan PizzaBakeResponse {
 }
 
 func (w *pizzaBakeWorker) handleBakeRequest(wreq bakeRequest) {
-	if invalidToping := FilterInvalidToping(wreq.req.Topings); len(invalidToping) > 0 {
+	if invalidToping := FilterInvalidToping(wreq.req.Toppings); len(invalidToping) > 0 {
 		wreq.respC <- PizzaBakeResponse{
 			//nolint:goerr113 // relax
 			Error: fmt.Errorf("failed to bake pizza: invalid topping requested %+s", invalidToping),

@@ -8,7 +8,7 @@ func (t Topping) Valid() bool {
 
 //nolint:gochecknoglobals // relax
 var toppings = []Topping{
-	"ketchup", "bacon", "salami", "origaon", "mushrooms", "onions", "olives", "mozzarella",
+	"ketchup", "bacon", "salami", "oregano", "mushrooms", "onions", "olives", "mozzarella",
 }
 
 func FilterInvalidToping(tt []Topping) []Topping {

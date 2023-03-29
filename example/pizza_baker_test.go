@@ -22,13 +22,15 @@ func Test_PizzaBaker(t *testing.T) {
 	t.Run("worker", func(t *testing.T) {
 		t.Parallel()
 
-		bakeReqMailbox := actor.NewMailbox[BakeRequest]()
-		bakeReqMailbox.Start()
-		t.Cleanup(bakeReqMailbox.Stop)
+		fact := func() PizzaBaker {
+			bakeReqMailbox := actor.NewMailbox[BakeRequest]()
+			bakeReqMailbox.Start()
+			t.Cleanup(bakeReqMailbox.Stop)
 
-		testPizzaBaker(t, func() PizzaBaker {
 			return NewPizzaBakeWorker(bakeReqMailbox)
-		})
+		}
+
+		testPizzaBaker(t, fact)
 	})
 }
 
@@ -46,7 +48,7 @@ func testPizzaBaker[T PizzaBaker](t *testing.T, fact factoryFn[T]) {
 
 	{ //  Valid bake request
 		respC := baker.Bake(PizzaBakeRequest{
-			Topings: []Topping{"ketchup", "bacon", "salami", "origaon", "mushrooms"},
+			Toppings: []Topping{"ketchup", "bacon", "salami", "oregano", "mushrooms"},
 		})
 		assert.Equal(t, actor.WorkerContinue, sa.DoWork())
 		assert.NoError(t, (<-respC).Error)
@@ -54,7 +56,7 @@ func testPizzaBaker[T PizzaBaker](t *testing.T, fact factoryFn[T]) {
 
 	{ // Invalid bake request
 		respC := baker.Bake(PizzaBakeRequest{
-			Topings: []Topping{"ketchup", "bacon", "salami", "strawberry"},
+			Toppings: []Topping{"ketchup", "bacon", "salami", "strawberry"},
 		})
 		assert.Equal(t, actor.WorkerContinue, sa.DoWork())
 		assert.Error(t, (<-respC).Error)

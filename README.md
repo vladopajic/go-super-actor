@@ -1,13 +1,13 @@
 # go-super-actor
 
-[![lint](https://github.com/vladopajic/go-super-actor/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/vladopajic/go-super-actor/actions/workflows/lint.yml)
 [![test](https://github.com/vladopajic/go-super-actor/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/vladopajic/go-super-actor/actions/workflows/test.yml)
+[![lint](https://github.com/vladopajic/go-super-actor/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/vladopajic/go-super-actor/actions/workflows/lint.yml)
 
 `go-super-actor` (or just `super`) is addon abstraction for [go-actor](https://github.com/vladopajic/go-actor) designed for testing actors and workers using same testing logic.
 
 ## Example 
 
-See example of `go-super-actor` (runnabe code is in [example](./example/) folder).
+See example of `go-super-actor` (runnable code is in [example](./example/) folder).
 
 First we need actor and worker that needs to be tested. In this example we have `PizzaBaker` actor and worker.
 
@@ -22,7 +22,7 @@ type PizzaBakerActor interface {
 }
 
 type PizzaBakeRequest struct {
-	Topings []Topping
+	Toppings []Topping
 }
 
 type PizzaBakeResponse struct {
@@ -34,13 +34,13 @@ func NewPizzaBaker() PizzaBakerActor {
 	bakeReqMailbox := actor.NewMailbox[bakeRequest]()
 	w := newPizzaBakeWorker(bakeReqMailbox)
 
-	return &bizzaBakerActor{
+	return &pizzaBakerActor{
 		Actor:      actor.Combine(actor.New(w), bakeReqMailbox),
 		PizzaBaker: w,
 	}
 }
 
-type bizzaBakerActor struct {
+type pizzaBakerActor struct {
 	actor.Actor
 	PizzaBaker
 }
@@ -83,7 +83,7 @@ func (w *pizzaBakeWorker) Bake(req PizzaBakeRequest) <-chan PizzaBakeResponse {
 }
 
 func (w *pizzaBakeWorker) handleBakeRequest(wreq bakeRequest) {
-	if invalidToping := FilterInvalidToping(wreq.req.Topings); len(invalidToping) > 0 {
+	if invalidToping := FilterInvalidToping(wreq.req.Toppings); len(invalidToping) > 0 {
 		wreq.respC <- PizzaBakeResponse{
 			Error: fmt.Errorf("failed to bake pizza: invalid topping requested %+s", invalidToping),
 		}
@@ -112,13 +112,15 @@ func Test_PizzaBaker(t *testing.T) {
 	t.Run("worker", func(t *testing.T) {
 		t.Parallel()
 
-		bakeReqMailbox := actor.NewMailbox[BakeRequest]()
-		bakeReqMailbox.Start()
-		t.Cleanup(bakeReqMailbox.Stop)
+		fact := func() PizzaBaker {
+			bakeReqMailbox := actor.NewMailbox[BakeRequest]()
+			bakeReqMailbox.Start()
+			t.Cleanup(bakeReqMailbox.Stop)
 
-		testPizzaBaker(t, func() PizzaBaker {
 			return NewPizzaBakeWorker(bakeReqMailbox)
-		})
+		}
+
+		testPizzaBaker(t, fact)
 	})
 }
 
@@ -136,7 +138,7 @@ func testPizzaBaker[T PizzaBaker](t *testing.T, fact factoryFn[T]) {
 
 	{ //  Valid bake request
 		respC := baker.Bake(PizzaBakeRequest{
-			Topings: []Topping{"ketchup", "bacon", "salami", "origaon", "mushrooms"},
+			Toppings: []Topping{"ketchup", "bacon", "salami", "oregano", "mushrooms"},
 		})
 		assert.Equal(t, actor.WorkerContinue, sa.DoWork())
 		assert.NoError(t, (<-respC).Error)
@@ -144,7 +146,7 @@ func testPizzaBaker[T PizzaBaker](t *testing.T, fact factoryFn[T]) {
 
 	{ // Invalid bake request
 		respC := baker.Bake(PizzaBakeRequest{
-			Topings: []Topping{"ketchup", "bacon", "salami", "strawberry"},
+			Toppings: []Topping{"ketchup", "bacon", "salami", "strawberry"},
 		})
 		assert.Equal(t, actor.WorkerContinue, sa.DoWork())
 		assert.Error(t, (<-respC).Error)
