@@ -20,10 +20,6 @@ jobs:
         uses: vladopajic/go-test-coverage@v1
         with:
           config: ./.testcoverage.yml
-      # Create badge
-      - uses: action-badges/create-orphan-branch@0.1.0
-        with:
-          branch-name: badges
       - name: make coverage badge
         uses: action-badges/core@0.2.2
         with:
