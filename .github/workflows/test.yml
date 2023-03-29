@@ -16,6 +16,20 @@ jobs:
       - name: generate coverage
         run: go test ./... -coverprofile=./cover.out -covermode=atomic
       - name: check test coverage
+        id: coverage
         uses: vladopajic/go-test-coverage@v1
         with:
           config: ./.testcoverage.yml
+      # Create badge
+      - uses: action-badges/create-orphan-branch@0.1.0
+        with:
+          branch-name: badges
+      - name: make coverage badge
+        uses: action-badges/core@0.2.2
+        with:
+          label: coverage
+          message: ${{ steps.coverage.outputs.total_coverage }}"
+          message-color: blue
+          file-name: coverage.svg
+          badge-branch: badges
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
