@@ -17,7 +17,7 @@ jobs:
         run: go test ./... -coverprofile=./cover.out -covermode=atomic
       - name: check test coverage
         id: coverage
-        uses: vladopajic/go-test-coverage@v1
+        uses: vladopajic/go-test-coverage@v2
         with:
           config: ./.testcoverage.yml
       - name: make coverage badge
