@@ -2,8 +2,8 @@
 # go-super-actor commits to keep 100% test coverage.
 
 profile: cover.out
-githubActionOutput: true
-localPrefix: "github.com/vladopajic/go-super-actor"
+github-action-output: true
+local-refix: "github.com/vladopajic/go-super-actor"
 threshold:
   file: 100
   package: 100
