@@ -8,7 +8,7 @@
 [![Release](https://img.shields.io/github/release/vladopajic/go-super-actor.svg?style=flat-square)](https://github.com/vladopajic/go-super-actor/releases/latest)
 
 
-`go-super-actor` (or just `super`) is addon abstraction for [go-actor](https://github.com/vladopajic/go-actor) designed for testing actors and workers using same testing logic.
+`go-super-actor` (or just `super`) is experimental addon abstraction for [go-actor](https://github.com/vladopajic/go-actor) designed for testing actors and workers using same testing logic.
 
 ## Example 
 
