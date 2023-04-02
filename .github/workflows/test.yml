@@ -25,8 +25,8 @@ jobs:
         if: contains(github.ref, 'main')
         with:
           label: coverage
-          message: ${{ steps.coverage.outputs.total_coverage }}%
-          message-color: blue
+          message: ${{ steps.coverage.outputs.badge-text }}
+          message-color: ${{ steps.coverage.outputs.badge-color }}
           file-name: coverage.svg
           badge-branch: badges
           github-token: "${{ secrets.GITHUB_TOKEN }}"
